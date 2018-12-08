@@ -3,11 +3,14 @@ const express = require('express');
 //const helmet
 //const logger
 
-//const projectRouter
-//const actionRouter
+const projectRouter = require('./routes/project_router.js')
+// const actionRouter
 
 const server = express();
 const PORT = 3000;
+
+
+server.use('/api/projects', projectRouter)
 
 
 server.get('/', (req , res) => {
