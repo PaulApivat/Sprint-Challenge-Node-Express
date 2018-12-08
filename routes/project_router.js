@@ -6,8 +6,8 @@ const db = require('../data/helpers/projectModel')
 //routes
 router.get('/', (req , res) => {
     db.get()
-    .then((project) => {
-        res.json(project)
+    .then((projects) => {
+        res.json(projects)
     })
     .catch(err => {
         res 
@@ -56,6 +56,24 @@ router.post('/', (req, res) => {
         res.status(400).json({message: "status 400: missing project name and description"})
     }
 })
+
+router.delete('/:id', (req, res) => {
+    const {id} = req.params;
+    db.remove(id).then(count => {
+        if (count){
+            res.json({message: "successfully deleted project"})
+        } else {
+            res 
+                .status(404)
+                .json({message: "invalid id"})
+        }
+    }).catch(err => {
+        res 
+        .status(500)
+        .json({message: "fail to delete project"})
+    })
+})
+
 
 
 
