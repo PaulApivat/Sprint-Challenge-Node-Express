@@ -54,5 +54,40 @@ router.delete('/:id', (req, res) => {
     })
 })
 
+router.put('/:id', (req, res) => {
+    const {id} = req.params;
+    const action = req.body;
+    //combine GET , POST , DELETE
+
+    if (action.project_id && action.description && action.notes) {
+
+        db2.update(id, action)
+        .then(count => {
+            if (count){
+                //200 successful update
+                db2.get(id).then(action => {
+                    res.json(action)
+                });
+            } else {
+                //404 invalid id
+                res 
+                .status(404)
+                .json({message: "invalid id"});
+            }
+        })
+        .catch(err => {
+            //500 catch-all, something else went wrong
+            res 
+            .status(500)
+            .json({message: "ssomething went wrong, fail to update action"})
+        })
+
+
+    } else {
+        //400 error 
+        res.status(400).json({message: "status 400: missing project id, description and notes"})
+    }
+})
+
 
 module.exports = router;
