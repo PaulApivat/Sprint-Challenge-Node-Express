@@ -74,6 +74,39 @@ router.delete('/:id', (req, res) => {
     })
 })
 
+router.put('/:id', (req, res) => {
+    const {id} = req.params;
+    const project = req.body;
+    // combination of GET, POST, DELETE
+
+    if (project.name) {
+
+        db.update(id, project)
+        .then(count => {
+            if (count) {
+                //200 successfully update
+                db.get(id).then(project => {
+                    res.json(project);
+                });
+            } else {
+                //404 invalid id
+                res 
+                .status(404)
+                .json({message: "invalid id"});
+            }
+        })
+        .catch(err => {
+            //500 catch-all, something else went wrong
+            res 
+            .status(500)
+            .json({message: "something went wrong, fail to update project"})
+        })
+
+    } else {
+        //400 error name is missing
+        res.status(400).json({message: "status 400: missing project name"})
+    }
+})
 
 
 
