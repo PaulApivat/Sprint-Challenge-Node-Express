@@ -35,5 +35,28 @@ router.get('/:id', (req, res) => {
     })
 })
 
+router.post('/', (req, res) => {
+    const project = req.body;
+    console.log('project from body', project)
+
+    if (project.name && project.description) {
+
+        db.insert(project).then(idInfo => {
+            db.get(idInfo.id).then(project => {
+                res.status(201).json(project);
+            });
+        }).catch(err => {
+            res 
+            .status(500)
+            .json({message: "failed to insert project in database"})
+        });
+
+    } else {
+        //more specific error message
+        res.status(400).json({message: "status 400: missing project name and description"})
+    }
+})
+
+
 
 module.exports = router;

@@ -4,13 +4,14 @@ const express = require('express');
 //const logger
 
 const projectRouter = require('./routes/project_router.js')
-// const actionRouter
+const actionRouter = require('./routes/action_router.js')
 
 const server = express();
 const PORT = 3000;
 
 
 server.use('/api/projects', projectRouter)
+server.use('/api/actions', actionRouter)
 
 
 server.get('/', (req , res) => {
